@@ -1,4 +1,4 @@
-# my-book-app
+# Household-account-app
 
 ## Project setup
 ```
