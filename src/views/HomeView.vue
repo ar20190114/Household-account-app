@@ -1,18 +1,57 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
-  </div>
+  <v-app id="inspire">
+    <v-app-bar flat>
+      <v-container class="fill-height d-flex align-center">
+        <v-icon icon="mdi-vuetify" />
+        <v-spacer />
+        <v-btn variant="text">Dashboard</v-btn>
+        <v-spacer />
+        <v-btn variant="text">Form</v-btn>
+        <v-spacer />
+        <v-responsive max-width="260">
+          <v-text-field
+            density="compact"
+            hide-details
+            variant="solo"
+          ></v-text-field>
+        </v-responsive>
+      </v-container>
+    </v-app-bar>
+
+    <v-main class="bg-grey-lighten-3">
+      <v-container>
+        <v-row>
+          <v-col cols="2">
+            <v-sheet rounded="lg">
+              <v-list rounded="lg">
+                <v-list-item v-for="n in 5" :key="n" link>
+                  <v-list-item-title> List Item {{ n }} </v-list-item-title>
+                </v-list-item>
+
+                <v-divider class="my-2"></v-divider>
+
+                <v-list-item link color="grey-lighten-4">
+                  <v-list-item-title> Refresh </v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-sheet>
+          </v-col>
+
+          <v-col>
+            <v-sheet min-height="70vh" rounded="lg">
+              <!--  -->
+            </v-sheet>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
-
-export default defineComponent({
-  name: "HomeView",
-  components: {
-    HelloWorld,
-  },
-});
+<script>
+export default {
+  data: () => ({
+    links: ["Dashboard", "Messages", "Profile", "Updates"],
+  }),
+};
 </script>
