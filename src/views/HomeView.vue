@@ -6,7 +6,7 @@
         <v-spacer />
         <v-btn variant="text">Dashboard</v-btn>
         <v-spacer />
-        <v-btn variant="text">Form</v-btn>
+        <v-btn variant="text" to="/form">Form</v-btn>
         <v-spacer />
         <v-responsive max-width="260">
           <v-text-field
