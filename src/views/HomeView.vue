@@ -9,11 +9,8 @@
         <v-btn variant="text" to="/form">Form</v-btn>
         <v-spacer />
         <v-responsive max-width="260">
-          <v-text-field
-            density="compact"
-            hide-details
-            variant="solo"
-          ></v-text-field>
+          <v-text-field density="compact" hide-details variant="solo">
+          </v-text-field>
         </v-responsive>
       </v-container>
     </v-app-bar>
@@ -47,8 +44,10 @@
           </v-col>
 
           <v-col>
-            <v-sheet min-height="70vh" rounded="lg">
-              <!--  -->
+            <v-sheet min-height="60vh" rounded="lg">
+              <div class="chart-position">
+                <DoughnutChart :chartData="testData" />
+              </div>
             </v-sheet>
           </v-col>
         </v-row>
@@ -57,10 +56,24 @@
   </v-app>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    links: ["Dashboard", "Messages", "Profile", "Updates"],
-  }),
+<script setup lang="ts">
+import { DoughnutChart } from "vue-chart-3";
+import { Chart, registerables } from "chart.js";
+
+Chart.register(...registerables);
+
+const testData = {
+  labels: ["Paris", "Nîmes", "Toulon", "Perpignan", "Autre"],
+  datasets: [
+    {
+      data: [30, 40, 60, 70, 5],
+      backgroundColor: ["#77CEFF", "#0079AF", "#123E6B", "#97B0C4", "#A5C8ED"],
+    },
+  ],
 };
 </script>
+<style scoped>
+.chart-position {
+  /*margin-top: 20px;*/
+}
+</style>
