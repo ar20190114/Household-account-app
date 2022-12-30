@@ -3,17 +3,16 @@
     <v-app-bar flat>
       <v-container class="fill-height d-flex align-center">
         <v-icon icon="mdi-vuetify" />
-        <v-spacer />
-        <v-btn variant="text">Dashboard</v-btn>
+        <v-alert-title>家計簿</v-alert-title>
         <v-spacer />
         <v-btn variant="text" to="/form">Form</v-btn>
         <v-spacer />
+        <v-btn variant="text">Update</v-btn>
+        <v-spacer />
+        <v-btn variant="text">Dashboard</v-btn>
         <v-responsive max-width="260">
-          <v-text-field
-            density="compact"
-            hide-details
-            variant="solo"
-          ></v-text-field>
+          <v-text-field density="compact" hide-details variant="solo">
+          </v-text-field>
         </v-responsive>
       </v-container>
     </v-app-bar>
@@ -47,8 +46,10 @@
           </v-col>
 
           <v-col>
-            <v-sheet min-height="70vh" rounded="lg">
-              <!--  -->
+            <v-sheet min-height="60vh" rounded="lg">
+              <div class="chart-position">
+                <DoughnutChart :chartData="testData" />
+              </div>
             </v-sheet>
           </v-col>
         </v-row>
@@ -57,10 +58,24 @@
   </v-app>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    links: ["Dashboard", "Messages", "Profile", "Updates"],
-  }),
+<script setup lang="ts">
+import { DoughnutChart } from "vue-chart-3";
+import { Chart, registerables } from "chart.js";
+
+Chart.register(...registerables);
+
+const testData = {
+  labels: ["ちー", "りー"],
+  datasets: [
+    {
+      data: [10000, 15000],
+      backgroundColor: ["#77CEFF", "#0079AF"],
+    },
+  ],
 };
 </script>
+<style scoped>
+.chart-position {
+  /*margin-top: 20px;*/
+}
+</style>
