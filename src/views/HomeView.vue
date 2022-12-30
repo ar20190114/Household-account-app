@@ -3,11 +3,13 @@
     <v-app-bar flat>
       <v-container class="fill-height d-flex align-center">
         <v-icon icon="mdi-vuetify" />
-        <v-spacer />
-        <v-btn variant="text">Dashboard</v-btn>
+        <v-alert-title>家計簿</v-alert-title>
         <v-spacer />
         <v-btn variant="text" to="/form">Form</v-btn>
         <v-spacer />
+        <v-btn variant="text">Update</v-btn>
+        <v-spacer />
+        <v-btn variant="text">Dashboard</v-btn>
         <v-responsive max-width="260">
           <v-text-field density="compact" hide-details variant="solo">
           </v-text-field>
@@ -63,11 +65,11 @@ import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
 const testData = {
-  labels: ["Paris", "Nîmes", "Toulon", "Perpignan", "Autre"],
+  labels: ["ちー", "りー"],
   datasets: [
     {
-      data: [30, 40, 60, 70, 5],
-      backgroundColor: ["#77CEFF", "#0079AF", "#123E6B", "#97B0C4", "#A5C8ED"],
+      data: [10000, 15000],
+      backgroundColor: ["#77CEFF", "#0079AF"],
     },
   ],
 };
