@@ -29,8 +29,10 @@
       </v-form>
       <v-card-actions>
         <div class="d-flex justify-space-between">
-          <v-btn color="error" class="mr-4">Reset Form</v-btn>
-          <v-btn color="success" class="mr-4">create</v-btn>
+          <v-btn color="error" class="mr-4" @click="clearForm">
+            Reset Form
+          </v-btn>
+          <v-btn color="success" class="mr-4" @click="postForm"> create </v-btn>
         </div>
       </v-card-actions>
     </div>
@@ -39,6 +41,10 @@
 
 <script setup lang="ts">
 import { Ref, ref, reactive } from "vue";
+import { collection, addDoc } from "firebase/firestore";
+import db from "../firebase.js";
+import router from "@/router";
+
 const subjectItem: Ref<string> = ref("");
 const personItem: Ref<string> = ref("");
 const householdInformation = reactive({
@@ -47,6 +53,28 @@ const householdInformation = reactive({
   subject: ["食費", "雑費"],
   person: ["りー", "ちー"],
 });
+
+async function postForm() {
+  try {
+    const docRef = await addDoc(collection(db, "money"), {
+      title: householdInformation.title,
+      pay: householdInformation.money,
+      subject: subjectItem.value,
+      author: personItem.value,
+    });
+    console.log("Document written with ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+  await router.push({ name: "home" });
+}
+
+function clearForm() {
+  householdInformation.title = "";
+  householdInformation.money = "";
+  subjectItem.value = "";
+  personItem.value = "";
+}
 </script>
 <style scoped>
 .card-box {
