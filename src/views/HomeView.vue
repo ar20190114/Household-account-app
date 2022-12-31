@@ -24,16 +24,20 @@
             <v-sheet rounded="lg">
               <v-list rounded="lg">
                 <v-list-item link color="grey-lighten-4">
-                  <v-list-item-title>精算</v-list-item-title>
+                  <v-btn variant="plain" @click="totalPayData">精算</v-btn>
                 </v-list-item>
                 <v-list-item link color="grey-lighten-4">
-                  <v-list-item-title>食費</v-list-item-title>
+                  <v-btn variant="plain" @click="foodPayData">食費</v-btn>
                 </v-list-item>
                 <v-list-item link color="grey-lighten-4">
-                  <v-list-item-title>雑費</v-list-item-title>
+                  <v-btn variant="plain" @click="generalMerchandisePayData">
+                    雑費
+                  </v-btn>
                 </v-list-item>
                 <v-list-item link color="grey-lighten-4">
-                  <v-list-item-title>光熱費</v-list-item-title>
+                  <v-btn variant="plain" @click="lightHeatPayData">
+                    光熱費
+                  </v-btn>
                 </v-list-item>
 
                 <v-divider class="my-2"></v-divider>
@@ -61,18 +65,137 @@
 <script setup lang="ts">
 import { DoughnutChart } from "vue-chart-3";
 import { Chart, registerables } from "chart.js";
+import { collection, getDocs } from "firebase/firestore";
+import { onMounted, ref, Ref } from "vue";
+import db from "../firebase.js";
 
-Chart.register(...registerables);
+const ryotaPay: Ref<number> = ref(0);
+const hanaPay: Ref<number> = ref(0);
+const testData = ref({});
 
-const testData = {
-  labels: ["ちー", "りー"],
-  datasets: [
-    {
-      data: [10000, 15000],
-      backgroundColor: ["#77CEFF", "#0079AF"],
-    },
-  ],
-};
+const totalPay = ref([]);
+
+onMounted(async () => {
+  const querySnapshot = await getDocs(collection(db, "money"));
+  querySnapshot.forEach((doc) => {
+    totalPay.value.push(doc.data());
+    if (doc.data().author === "りー") {
+      ryotaPay.value = ryotaPay.value + doc.data().pay;
+    } else {
+      hanaPay.value = hanaPay.value + doc.data().pay;
+    }
+  });
+  Chart.register(...registerables);
+
+  testData.value = {
+    labels: ["ちー", "りー"],
+    datasets: [
+      {
+        data: [hanaPay.value, ryotaPay.value],
+        backgroundColor: ["#77CEFF", "#0079AF"],
+      },
+    ],
+  };
+});
+
+function totalPayData() {
+  ryotaPay.value = 0;
+  hanaPay.value = 0;
+  totalPay.value.forEach((doc) => {
+    if (doc.author === "りー") {
+      ryotaPay.value = ryotaPay.value + doc.pay;
+    } else {
+      hanaPay.value = hanaPay.value + doc.pay;
+    }
+  });
+
+  Chart.register(...registerables);
+
+  testData.value = {
+    labels: ["ちー", "りー"],
+    datasets: [
+      {
+        data: [hanaPay.value, ryotaPay.value],
+        backgroundColor: ["#77CEFF", "#0079AF"],
+      },
+    ],
+  };
+}
+
+function foodPayData() {
+  ryotaPay.value = 0;
+  hanaPay.value = 0;
+  totalPay.value.forEach((doc) => {
+    if (doc.author === "りー" && doc.subject === "食費") {
+      ryotaPay.value = ryotaPay.value + doc.pay;
+    }
+    if (doc.author === "ちー" && doc.subject === "食費") {
+      hanaPay.value = hanaPay.value + doc.pay;
+    }
+  });
+
+  Chart.register(...registerables);
+
+  testData.value = {
+    labels: ["ちー", "りー"],
+    datasets: [
+      {
+        data: [hanaPay.value, ryotaPay.value],
+        backgroundColor: ["#77CEFF", "#0079AF"],
+      },
+    ],
+  };
+}
+
+function generalMerchandisePayData() {
+  ryotaPay.value = 0;
+  hanaPay.value = 0;
+  totalPay.value.forEach((doc) => {
+    if (doc.author === "りー" && doc.subject === "雑費") {
+      ryotaPay.value = ryotaPay.value + doc.pay;
+    }
+    if (doc.author === "ちー" && doc.subject === "雑費") {
+      hanaPay.value = hanaPay.value + doc.pay;
+    }
+  });
+
+  Chart.register(...registerables);
+
+  testData.value = {
+    labels: ["ちー", "りー"],
+    datasets: [
+      {
+        data: [hanaPay.value, ryotaPay.value],
+        backgroundColor: ["#77CEFF", "#0079AF"],
+      },
+    ],
+  };
+}
+
+function lightHeatPayData() {
+  ryotaPay.value = 0;
+  hanaPay.value = 0;
+  totalPay.value.forEach((doc) => {
+    if (doc.author === "りー" && doc.subject === "光熱費") {
+      ryotaPay.value = ryotaPay.value + doc.pay;
+    }
+    if (doc.author === "ちー" && doc.subject === "光熱費") {
+      hanaPay.value = hanaPay.value + doc.pay;
+    }
+  });
+
+  Chart.register(...registerables);
+
+  testData.value = {
+    labels: ["ちー", "りー"],
+    datasets: [
+      {
+        data: [hanaPay.value, ryotaPay.value],
+        backgroundColor: ["#77CEFF", "#0079AF"],
+      },
+    ],
+  };
+}
 </script>
 <style scoped>
 .chart-position {
