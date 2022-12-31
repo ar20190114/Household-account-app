@@ -50,7 +50,7 @@ const personItem: Ref<string> = ref("");
 const householdInformation = reactive({
   title: "",
   money: "",
-  subject: ["食費", "雑費"],
+  subject: ["食費", "雑費", "光熱費"],
   person: ["りー", "ちー"],
 });
 
